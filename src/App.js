@@ -1,24 +1,27 @@
-import logo from './logo.svg';
+import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-function App() {
+const useComfirm = (message = "", callback ,rejection) => {
+  const confirmAction = () => {
+    if (window.confirm(message)) {
+      callback();
+    } else {
+      rejection();
+    }
+  };
+
+  return typeof rejection !== "function" && typeof callback !== "function" ? undefined : confirmAction
+};
+
+const App = () => {
+  const deleteWorld = () => console.log("Delete the world...");
+  const abort = () => console.log("Abort...");
+  const confirmDelete = useComfirm("Are you sure?", deleteWorld, abort);
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className='App'>
+      <button onClick={confirmDelete}>Delete the World</button>
     </div>
+
   );
 }
 
