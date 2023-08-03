@@ -1,27 +1,37 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
 
-const useComfirm = (message = "", callback ,rejection) => {
-  const confirmAction = () => {
-    if (window.confirm(message)) {
-      callback();
-    } else {
-      rejection();
+const useFullscreen = (callback) => {
+  const element = useRef();
+  const triggerFull = () => {
+    element.current.requestFullscreen();
+    if (callback && typeof callback === "function") {
+      callback(true);
     }
-  };
+  }
 
-  return typeof rejection !== "function" && typeof callback !== "function" ? undefined : confirmAction
-};
+  const exitFull = () => {
+    document.exitFullscreen();
+    if (callback && typeof callback === "function") {
+      callback(false);
+    }
+  }
+  return { element, triggerFull, exitFull };
+}
 
 const App = () => {
-  const deleteWorld = () => console.log("Delete the world...");
-  const abort = () => console.log("Abort...");
-  const confirmDelete = useComfirm("Are you sure?", deleteWorld, abort);
+  const onFullScr = (isFull) => {
+    console.log(isFull ? "We are full" : "We are small");
+  }
+  const { element, triggerFull, exitFull } = useFullscreen(onFullScr);
   return (
-    <div className='App'>
-      <button onClick={confirmDelete}>Delete the World</button>
+    <div className='App' style={{ height: "1000vh"}}>
+      <div ref={element}>
+        <img src='https://i.ibb.co/R6RwNxx/grape.jpg'/>
+        <button onClick={exitFull}>Exit fullscreen</button>
+      </div>
+      <button onClick={triggerFull}>Make fullscreen</button>
     </div>
-
   );
 }
 
