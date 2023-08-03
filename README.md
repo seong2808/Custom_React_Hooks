@@ -1,4 +1,12 @@
-# Getting Started with Create React App
+# NomadCoder 강의 중 실전형 리액트 Hooks
+
+## CODE
+hooks 파일 -> 강의 진행하면서 만든 Custom Hooks
+
+## 목적
+useState와 useEffect를 이용한 Custom Hook들을 만들면서 useState와 useEffect의 사용방법을 익히고자 함.
+
+
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
