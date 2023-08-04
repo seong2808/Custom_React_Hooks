@@ -1,36 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 import './App.css';
-
-const useFullscreen = (callback) => {
-  const element = useRef();
-  const triggerFull = () => {
-    element.current.requestFullscreen();
-    if (callback && typeof callback === "function") {
-      callback(true);
-    }
-  }
-
-  const exitFull = () => {
-    document.exitFullscreen();
-    if (callback && typeof callback === "function") {
-      callback(false);
-    }
-  }
-  return { element, triggerFull, exitFull };
-}
+import useAxios from './hooks/useAxios';
 
 const App = () => {
-  const onFullScr = (isFull) => {
-    console.log(isFull ? "We are full" : "We are small");
-  }
-  const { element, triggerFull, exitFull } = useFullscreen(onFullScr);
+  const { loading, data, error, refetch} = useAxios({url:"https://yts.mx/api/v2/list_movies.json"});
+  console.log(`Loading: ${loading}\nData: ${JSON.stringify(data)}\nError: ${error}`);
   return (
     <div className='App' style={{ height: "1000vh"}}>
-      <div ref={element}>
-        <img src='https://i.ibb.co/R6RwNxx/grape.jpg'/>
-        <button onClick={exitFull}>Exit fullscreen</button>
-      </div>
-      <button onClick={triggerFull}>Make fullscreen</button>
+      <h1>{data && data.status}</h1>
+      <h2>{loading && "Loading"}</h2>
+      <button onClick={refetch}>Refetch</button>
     </div>
   );
 }
